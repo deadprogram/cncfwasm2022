@@ -1,0 +1,37 @@
+graph TD
+    Y[User program] --> C
+subgraph gcr [Google Cloud Run - Docker container]
+    C{{TinyGo complier}}
+    C --> WASMP
+    C --> NATP
+end
+subgraph Hardware Simulator Web Worker
+    WASMP(WebAssembly binary) --> JS{{JS Interface for WebAssembly Module}}
+    JS --> UI[Netlist - state]
+    UI --> SVG[Parts - SVG UI rendering]
+end
+subgraph Download button
+    NATP(Native binary) --> DL(Download file)
+end
+    
+graph TD
+subgraph WebAssembly binary
+    Y[package main] --> M{{package machine}}
+    Y --> G(standard Go packages)
+    G --> R(package runtime)
+    Y --> R
+    R --> M
+end
+M --> D{{JS Interface for WebAssembly Module}}
+D --> H[Hardware Simulator Web Worker]
+
+graph TD
+subgraph Native binary
+    Y[package main] --> M{{package machine}}
+    Y --> G(standard Go packages)
+    G --> R(package runtime)
+    Y --> R
+    R --> M
+    M --> D{{package device}}
+end
+    D --> H[Hardware]
